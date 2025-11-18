@@ -1,0 +1,39 @@
+* PROJECT MISSION
+
+** Motivation
+With the rising supply and demand of professional courses, many institutions face the difficulty of effectively managing enrollments, classes, exams and overall student performance. In many cases, these tasks are done manually or with spreadsheets, which are unrealiable and hard to maintain. Due to this, it becomes necessary to develop an academic system which centralizes these operations, ensuring organization, transparency and efficiency.
+
+** System Requirements
+The system must meet the following criteria, with no exceptions.
+
+*** Users and Groups
+1) *Administrators*, which may be capable to:
+   - Manage other users (Students, Professors and other Admins).
+   - Manage courses offered by the institution.
+   - Define the maximum number of Students per course and class.
+   - Create and manage classes for each course and associate them to a Professor.
+   - Define college periods and start/end date of classes.
+2) *Professors*, which may be capable to:
+   - Have access to the classes they are registered under.
+   - Register class materials and activities (such as exams and group projects).
+   - Assess students and define their grades.
+3) *Students*, which may be capable to:
+   - Enroll on open classes, respecting the maximum student limit.
+   - In case of rejection by the enrollment limit, send an automated message to the responsible professor.
+   - In case of failing due to (insufficient grades or enrollment rejection?), increase enrollment priority for next college period.
+   - View grades and other relevant and available data.
+   - View the history of past classes, each containing their passing grade.
+4) A user may have multiple roles, like an admin professor, or a professor enrolled as a student.
+5) A professor enrolled as a student must /not/ be able to enroll in his own classes (duh).
+6) A user may change his/her own profile details, with the exception of the profile's role.
+
+*** Features
+1) List the amount of students in each class of a given course.
+2) Calculate the average grade of a class on a given course.
+3) Identify the students with below average grades (below 5.0).
+4) List all active classes under a certain professor.
+5) Identify the professor with the largest number of active classes.
+6) List the top 3 classes with the highest grades.
+7) Identify the professors that are also students.
+8) Identify which student passed the most courses.
+9) Archive expired classes.
