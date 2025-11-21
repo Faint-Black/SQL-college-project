@@ -10,7 +10,7 @@ This project makes use of the GNU build system (autotools). Standard pipeline ap
 
 ### Compiling
 ```sh
-autoreconf -i && ./configure && make
+autoreconf -fi && ./configure && make
 ```
 
 ### Running
