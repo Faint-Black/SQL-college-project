@@ -1,8 +1,21 @@
-## OUTPUT FILES
+## LATEX FILES
+
+*.aux
+*.log
+*.pdf
+*.fls
+*.synctex.gz
+*.fdb_latexmk
+*.bbl
+*.bcf
+*.blg
+*.out
+*.xml
+
+## CODE OUTPUT FILES
 
 manager
 *.o
-
 
 ## DEVELOPMENT FILES
 
