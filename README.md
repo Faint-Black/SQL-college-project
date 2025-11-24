@@ -10,7 +10,8 @@ This project makes use of the GNU build system (autotools). Standard pipeline ap
 
 ### Compiling
 ```sh
-autoreconf -fi && ./configure && make
+autoreconf -fi && ./configure
+make DBCLIENT_USR="sqluser" DBCLIENT_PWD="1234"
 ```
 
 ### Running

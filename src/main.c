@@ -1,13 +1,8 @@
+#include "sql.h"
 #include <config.h>
 #include <gtk/gtk.h>
-
-#if defined(USE_MARIADB)
-#include <mariadb/mysql.h>
-#elif defined(USE_MYSQL)
-#include <mysql.h>
-#else
-#error "no DB API found"
-#endif
+#include <stdio.h>
+#include <stdlib.h>
 
 static void
 hello_world_print (GtkWidget *widget, gpointer user_data)
@@ -35,9 +30,20 @@ activate (GtkApplication *app, gpointer user_data)
 int
 main (int argc, char **argv)
 {
+  // init SQL
+  if (sql_init ())
+    {
+      printf ("FATAL ERROR: SQL could not initialize!\n");
+      return EXIT_FAILURE;
+    }
+  else
+    {
+      printf ("LOG: SQL connection initialized\n");
+    }
+
+  // init GTK4
   GtkApplication *app;
   int status;
-
   app = gtk_application_new ("org.gtk.collegemanager",
                              G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
