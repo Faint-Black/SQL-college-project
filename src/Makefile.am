@@ -1,5 +1,5 @@
 bin_PROGRAMS = manager
-manager_SOURCES = main.c
+manager_SOURCES = main.c sql_commands.c
 manager_CFLAGS = $(GTK_CFLAGS)
 manager_LDADD = $(GTK_LIBS)
 
