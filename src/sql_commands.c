@@ -1,9 +1,9 @@
 #include "sql_commands.h"
 
 const char *sql_com_init[] = {
-  // let there be light!
+  // let there be light
   "CREATE DATABASE IF NOT EXISTS college_manager",
-  // put light in a bulb
+  // put such light in a bulb
   "USE college_manager",
   // superclass; refer to docs/diagram
   "CREATE TABLE scholars (\n"
