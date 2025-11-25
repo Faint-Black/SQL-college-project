@@ -1,0 +1,23 @@
+* SQL College Project
+A graphical SQL interface for managing professors and students of an institution.
+
+** Building
+This project makes use of the GNU build system (autotools). Standard pipeline applies here as well.
+
+*** Dependencies
+- *GTK4*
+- *MariaDB* /or/ *MySQL*
+- *texlive*
+
+*** Compiling
+#+BEGIN_SRC shell
+autoreconf -fi
+./configure
+make DBCLIENT_USR="sqluser" DBCLIENT_PWD="1234"
+#+END_SRC
+/Compiling and running with SQL user as "root" not tested and not encouraged!/
+
+*** Running
+#+BEGIN_SRC shell
+./src/manager
+#+END_SRC
