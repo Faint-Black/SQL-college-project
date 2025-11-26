@@ -41,6 +41,24 @@ sql_init (void)
       printf ("LOG: mysql_real_connect() succeeded\n");
     }
 
+  // execute commands
+  for (int i = 0; i < sql_com_init_len; i++)
+    {
+      int code = mysql_query (conn, sql_com_init[i]);
+      if (code)
+        {
+          printf ("FATAL ERROR: init command [%d/%d] failed, error: '%s'\n",
+                  i + 1, sql_com_init_len, mysql_error (conn));
+          mysql_close (conn);
+          return 0;
+        }
+      else
+        {
+          printf ("LOG: init command [%d/%d] succeded\n", i + 1,
+                  sql_com_init_len);
+        }
+    }
+
   // TODO: remove this
   mysql_close (conn);
   return 0;

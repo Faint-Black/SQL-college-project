@@ -6,7 +6,7 @@ const char *sql_com_init[] = {
   // put such light in a bulb
   "USE college_manager",
   // superclass; refer to docs/diagram
-  "CREATE TABLE scholars (\n"
+  "CREATE TABLE IF NOT EXISTS scholars (\n"
   "  id INT AUTO_INCREMENT PRIMARY KEY,\n"
   "  full_name VARCHAR(256) NOT NULL\n"
   ")",

@@ -21,3 +21,8 @@ make DBCLIENT_USR="sqluser" DBCLIENT_PWD="1234"
 #+BEGIN_SRC shell
 ./src/manager
 #+END_SRC
+
+*** Issues
+
+**** Access Denied:
+Make sure your database user has enough permissions to do anything with the database.

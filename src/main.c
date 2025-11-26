@@ -38,7 +38,7 @@ main (int argc, char **argv)
     }
   else
     {
-      printf ("LOG: SQL connection initialized\n");
+      printf ("LOG: SQL database fully initialized\n");
     }
 
   // init GTK4
