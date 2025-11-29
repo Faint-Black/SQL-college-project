@@ -10,7 +10,7 @@ This project makes use of the GNU build system (autotools). Standard pipeline ap
 - *texlive*
 
 *** Compiling
-#+BEGIN_SRC shell
+#+BEGIN_SRC sh
 autoreconf -fi
 ./configure
 make DBCLIENT_USR="sqluser" DBCLIENT_PWD="1234"
@@ -18,7 +18,7 @@ make DBCLIENT_USR="sqluser" DBCLIENT_PWD="1234"
 /Compiling and running with SQL user as "root" not tested and not encouraged!/
 
 *** Running
-#+BEGIN_SRC shell
+#+BEGIN_SRC sh
 ./src/manager
 #+END_SRC
 

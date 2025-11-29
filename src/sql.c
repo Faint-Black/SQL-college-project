@@ -11,34 +11,35 @@
 #error "no DB API found"
 #endif
 
-extern int
-sql_init (void)
+// returns connection ptr on success, and null on fail
+static MYSQL *
+sql_connect (char const *user, char const *password)
 {
   MYSQL *conn;
-
   // init connection object
   conn = mysql_init (NULL);
   if (conn == NULL)
     {
-      printf ("FATAL ERROR: mysql_init() failed\n");
-      return -1;
+      return NULL;
     }
-  else
-    {
-      printf ("LOG: mysql_init() succeeded\n");
-    }
-
   // apply connection to daemon
   if (mysql_real_connect (conn, "localhost", DB_USR, DB_PWD, NULL, 0, NULL, 0)
       == NULL)
     {
-      printf ("FATAL ERROR: mysql_real_connect() failed\n");
       mysql_close (conn);
-      return -1;
+      return NULL;
     }
-  else
+  return conn;
+}
+
+extern int
+sql_init (void)
+{
+  MYSQL *conn = sql_connect (DB_USR, DB_PWD);
+  if (conn == NULL)
     {
-      printf ("LOG: mysql_real_connect() succeeded\n");
+      printf ("FATAL ERROR: sql_connect() failed\n");
+      return -1;
     }
 
   // execute commands
@@ -59,7 +60,6 @@ sql_init (void)
         }
     }
 
-  // TODO: remove this
   mysql_close (conn);
   return 0;
 }
