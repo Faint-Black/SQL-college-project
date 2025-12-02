@@ -3,7 +3,6 @@
 const char *sql_com_init[] = {
   // let there be light
   "CREATE DATABASE IF NOT EXISTS college_manager",
-  // put such light in a bulb
   "USE college_manager",
   // superclass; refer to docs/diagram
   "CREATE TABLE IF NOT EXISTS scholars (\n"

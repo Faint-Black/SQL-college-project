@@ -23,7 +23,7 @@ sql_connect (char const *user, char const *password)
       return NULL;
     }
   // apply connection to daemon
-  if (mysql_real_connect (conn, "localhost", DB_USR, DB_PWD, NULL, 0, NULL, 0)
+  if (mysql_real_connect (conn, "localhost", user, password, NULL, 0, NULL, 0)
       == NULL)
     {
       mysql_close (conn);
@@ -58,6 +58,35 @@ sql_init (void)
           printf ("LOG: init command [%d/%d] succeded\n", i + 1,
                   sql_com_init_len);
         }
+    }
+
+  mysql_close (conn);
+  return 0;
+}
+
+extern int
+sql_destroy (void)
+{
+  MYSQL *conn = sql_connect (DB_USR, DB_PWD);
+  if (conn == NULL)
+    {
+      printf ("FATAL ERROR: sql_connect() failed\n");
+      return -1;
+    }
+
+  // execute commands
+  char const *command = "DROP DATABASE IF EXISTS college_manager";
+  int code = mysql_query (conn, command);
+  if (code)
+    {
+      printf ("FATAL ERROR: could not drop database, error: '%s'\n",
+              mysql_error (conn));
+      mysql_close (conn);
+      return 0;
+    }
+  else
+    {
+      printf ("LOG: database dropping succeded\n");
     }
 
   mysql_close (conn);

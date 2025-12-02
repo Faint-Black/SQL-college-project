@@ -5,43 +5,77 @@
 #include <stdlib.h>
 
 static void
-hello_world_print (GtkWidget *widget, gpointer user_data)
+callback_init_database ([[maybe_unused]] GtkWidget *widget,
+                        [[maybe_unused]] gpointer user_data)
 {
-  g_print ("Hello World!\n");
+  if (sql_init ())
+    {
+      g_print ("FATAL ERROR: SQL could not initialize!\n");
+      exit (EXIT_FAILURE);
+    }
+  else
+    {
+      g_print ("LOG: SQL database fully initialized\n");
+    }
 }
 
 static void
-activate (GtkApplication *app, gpointer user_data)
+callback_drop_database ([[maybe_unused]] GtkWidget *widget,
+                        [[maybe_unused]] gpointer user_data)
+{
+  if (sql_destroy ())
+    {
+      g_print ("FATAL ERROR: SQL database could not be destroyed!\n");
+      exit (EXIT_FAILURE);
+    }
+  else
+    {
+      g_print ("LOG: SQL database dropped\n");
+    }
+}
+
+static void
+activate (GtkApplication *app, [[maybe_unused]] gpointer user_data)
 {
   GtkWidget *window;
-  GtkWidget *button;
+  GtkWidget *scroll_window;
+  GtkWidget *scroll_box;
+  GtkWidget *create_button;
+  GtkWidget *destroy_button;
 
+  // app window
   window = gtk_application_window_new (app);
   gtk_window_set_title (GTK_WINDOW (window), "College Manager");
   gtk_window_set_default_size (GTK_WINDOW (window), 500, 300);
 
-  button = gtk_button_new_with_label ("Hello SQL Manager");
-  g_signal_connect (button, "clicked", G_CALLBACK (hello_world_print), NULL);
-  gtk_window_set_child (GTK_WINDOW (window), button);
+  // scrollable widget
+  scroll_window = gtk_scrolled_window_new ();
+  gtk_window_set_child (GTK_WINDOW (window), scroll_window);
 
+  // container which scrollable window uses
+  scroll_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scroll_window),
+                                 scroll_box);
+
+  // create database button
+  create_button = gtk_button_new_with_label ("Initialize SQL database");
+  g_signal_connect (create_button, "clicked",
+                    G_CALLBACK (callback_init_database), NULL);
+  gtk_box_append (GTK_BOX (scroll_box), create_button);
+
+  // destroy database button
+  destroy_button = gtk_button_new_with_label ("Drop SQL database");
+  g_signal_connect (destroy_button, "clicked",
+                    G_CALLBACK (callback_drop_database), NULL);
+  gtk_box_append (GTK_BOX (scroll_box), destroy_button);
+
+  // render app window and all children
   gtk_window_present (GTK_WINDOW (window));
 }
 
 int
 main (int argc, char **argv)
 {
-  // init SQL
-  if (sql_init ())
-    {
-      printf ("FATAL ERROR: SQL could not initialize!\n");
-      return EXIT_FAILURE;
-    }
-  else
-    {
-      printf ("LOG: SQL database fully initialized\n");
-    }
-
-  // init GTK4
   GtkApplication *app;
   int status;
   app = gtk_application_new ("org.gtk.collegemanager",
