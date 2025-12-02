@@ -13,7 +13,7 @@ This project makes use of the GNU build system (autotools). Standard pipeline ap
 #+BEGIN_SRC sh
 autoreconf -fi
 ./configure
-make DBCLIENT_USR="sqluser" DBCLIENT_PWD="1234"
+make DBCLIENT_USR="<your SQL user>" DBCLIENT_PWD="<your SQL user password>"
 #+END_SRC
 /Compiling and running with SQL user as "root" not tested and not encouraged!/
 
