@@ -50,23 +50,31 @@ activate (GtkApplication *app, [[maybe_unused]] gpointer user_data)
 
   // scrollable widget
   scroll_window = gtk_scrolled_window_new ();
-  gtk_window_set_child (GTK_WINDOW (window), scroll_window);
 
   // container which scrollable window uses
   scroll_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scroll_window),
-                                 scroll_box);
 
   // create database button
   create_button = gtk_button_new_with_label ("Initialize SQL database");
   g_signal_connect (create_button, "clicked",
                     G_CALLBACK (callback_init_database), NULL);
-  gtk_box_append (GTK_BOX (scroll_box), create_button);
 
   // destroy database button
   destroy_button = gtk_button_new_with_label ("Drop SQL database");
   g_signal_connect (destroy_button, "clicked",
                     G_CALLBACK (callback_drop_database), NULL);
+
+  // set parent/child model:
+  //
+  // APP_WINDOW
+  // L SCROLL_WINDOW
+  //   L SCROLL_BOX
+  //     L DB_CREATION_BUTTON
+  //     L DB_DESTRUCTION_BUTTON
+  gtk_window_set_child (GTK_WINDOW (window), scroll_window);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (scroll_window),
+                                 scroll_box);
+  gtk_box_append (GTK_BOX (scroll_box), create_button);
   gtk_box_append (GTK_BOX (scroll_box), destroy_button);
 
   // render app window and all children
