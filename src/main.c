@@ -37,30 +37,25 @@ callback_drop_database ([[maybe_unused]] GtkWidget *widget,
 static void
 activate (GtkApplication *app, [[maybe_unused]] gpointer user_data)
 {
-  GtkWidget *window;
-  GtkWidget *scroll_window;
-  GtkWidget *scroll_box;
-  GtkWidget *create_button;
-  GtkWidget *destroy_button;
-
   // app window
-  window = gtk_application_window_new (app);
+  GtkWidget *window = gtk_application_window_new (app);
   gtk_window_set_title (GTK_WINDOW (window), "College Manager");
   gtk_window_set_default_size (GTK_WINDOW (window), 500, 300);
 
   // scrollable widget
-  scroll_window = gtk_scrolled_window_new ();
+  GtkWidget *scroll_window = gtk_scrolled_window_new ();
 
   // container which scrollable window uses
-  scroll_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  GtkWidget *scroll_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
   // create database button
-  create_button = gtk_button_new_with_label ("Initialize SQL database");
+  GtkWidget *create_button
+      = gtk_button_new_with_label ("Initialize SQL database");
   g_signal_connect (create_button, "clicked",
                     G_CALLBACK (callback_init_database), NULL);
 
   // destroy database button
-  destroy_button = gtk_button_new_with_label ("Drop SQL database");
+  GtkWidget *destroy_button = gtk_button_new_with_label ("Drop SQL database");
   g_signal_connect (destroy_button, "clicked",
                     G_CALLBACK (callback_drop_database), NULL);
 
