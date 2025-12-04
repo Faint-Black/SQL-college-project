@@ -1,7 +1,34 @@
 #include "widgets.h"
 #include "callbacks.h"
-#include "glib-object.h"
 #include <gtk/gtk.h>
+
+static gchar *
+get_timestamp_string (void)
+{
+  gchar *time_string;
+  GDateTime *now = g_date_time_new_now_local ();
+  time_string = g_date_time_format (now, "[%F %T]");
+  g_date_time_unref (now);
+  return time_string;
+}
+
+static void
+append_log (LogWidgets *log, char const *prefix, char const *msg)
+{
+  gchar *time = get_timestamp_string ();
+  GtkTextIter iterator;
+  GtkTextBuffer *buffer
+      = gtk_text_view_get_buffer (GTK_TEXT_VIEW (log->text_view));
+  gtk_text_buffer_get_end_iter (buffer, &iterator);
+
+  gtk_text_buffer_insert (buffer, &iterator, time, -1);
+  gtk_text_buffer_insert (buffer, &iterator, " ", -1);
+  gtk_text_buffer_insert (buffer, &iterator, prefix, -1);
+  gtk_text_buffer_insert (buffer, &iterator, msg, -1);
+  gtk_text_buffer_insert (buffer, &iterator, "\n", -1);
+
+  g_free (time);
+}
 
 extern GtkWidget *
 create_log_widgets (void)
@@ -108,29 +135,17 @@ get_data_display_widgets (GtkWidget *container)
 extern void
 append_log_notice (LogWidgets *log, char const *msg)
 {
-  GtkTextIter iterator;
-  GtkTextBuffer *buffer
-      = gtk_text_view_get_buffer (GTK_TEXT_VIEW (log->text_view));
-  gtk_text_buffer_get_end_iter (buffer, &iterator);
-  gtk_text_buffer_insert (buffer, &iterator, "NOTICE\n", -1);
+  append_log (log, "LOG: ", msg);
 }
 
 extern void
 append_log_warn (LogWidgets *log, char const *msg)
 {
-  GtkTextIter iterator;
-  GtkTextBuffer *buffer
-      = gtk_text_view_get_buffer (GTK_TEXT_VIEW (log->text_view));
-  gtk_text_buffer_get_end_iter (buffer, &iterator);
-  gtk_text_buffer_insert (buffer, &iterator, "WARN\n", -1);
+  append_log (log, "WARN: ", msg);
 }
 
 extern void
 append_log_error (LogWidgets *log, char const *msg)
 {
-  GtkTextIter iterator;
-  GtkTextBuffer *buffer
-      = gtk_text_view_get_buffer (GTK_TEXT_VIEW (log->text_view));
-  gtk_text_buffer_get_end_iter (buffer, &iterator);
-  gtk_text_buffer_insert (buffer, &iterator, "ERROR\n", -1);
+  append_log (log, "ERROR: ", msg);
 }
