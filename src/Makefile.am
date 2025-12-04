@@ -1,6 +1,6 @@
 bin_PROGRAMS = manager
-manager_SOURCES = main.c sql_commands.c sql.c
-manager_CFLAGS = $(GTK_CFLAGS) $(DBCLIENT_CFLAGS) -Wall -Wextra
+manager_SOURCES = main.c sql_commands.c sql.c callbacks.c widgets.c
+manager_CFLAGS = $(GTK_CFLAGS) $(DBCLIENT_CFLAGS) -Wall -Wextra -Wno-unused-parameter
 manager_LDADD = $(GTK_LIBS) $(DBCLIENT_LIBS)
 
 if USE_MARIADB
