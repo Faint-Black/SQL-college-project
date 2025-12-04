@@ -16,12 +16,17 @@ create_log_widgets (void)
 
   log->label = gtk_label_new ("Log output:");
 
+  log->scroll_window = gtk_scrolled_window_new ();
+
   log->text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (log->text_view), FALSE);
   gtk_text_view_set_monospace (GTK_TEXT_VIEW (log->text_view), TRUE);
+  gtk_widget_set_vexpand (log->text_view, TRUE);
 
   gtk_box_append (GTK_BOX (log->container), log->label);
-  gtk_box_append (GTK_BOX (log->container), log->text_view);
+  gtk_box_append (GTK_BOX (log->container), log->scroll_window);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (log->scroll_window),
+                                 log->text_view);
 
   // embed struct pointer to container
   g_object_set_data_full (G_OBJECT (log->container), "struct-data", log,

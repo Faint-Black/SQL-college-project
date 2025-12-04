@@ -6,6 +6,7 @@ typedef struct LogWidgets
 {
   GtkWidget *container;
   GtkWidget *label;
+  GtkWidget *scroll_window;
   GtkWidget *text_view;
 } LogWidgets;
 
