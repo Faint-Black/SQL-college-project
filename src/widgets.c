@@ -13,7 +13,8 @@ get_timestamp_string (void)
 }
 
 static void
-append_log (LogWidgets *log, char const *prefix, char const *msg)
+append_log (LogWidgets *log, char const *prefix, char const *msg,
+            GtkTextTag *tag)
 {
   gchar *time = get_timestamp_string ();
   GtkTextIter iterator;
@@ -23,7 +24,7 @@ append_log (LogWidgets *log, char const *prefix, char const *msg)
 
   gtk_text_buffer_insert (buffer, &iterator, time, -1);
   gtk_text_buffer_insert (buffer, &iterator, " ", -1);
-  gtk_text_buffer_insert (buffer, &iterator, prefix, -1);
+  gtk_text_buffer_insert_with_tags (buffer, &iterator, prefix, -1, tag, NULL);
   gtk_text_buffer_insert (buffer, &iterator, msg, -1);
   gtk_text_buffer_insert (buffer, &iterator, "\n", -1);
 
@@ -49,6 +50,17 @@ create_log_widgets (void)
   gtk_text_view_set_editable (GTK_TEXT_VIEW (log->text_view), FALSE);
   gtk_text_view_set_monospace (GTK_TEXT_VIEW (log->text_view), TRUE);
   gtk_widget_set_vexpand (log->text_view, TRUE);
+
+  // also define the tag creations here
+  GtkTextBuffer *buffer
+      = gtk_text_view_get_buffer (GTK_TEXT_VIEW (log->text_view));
+  log->tag_log = gtk_text_buffer_create_tag (
+      buffer, "log", "foreground", "cyan", "weight", PANGO_WEIGHT_BOLD, NULL);
+  log->tag_wrn
+      = gtk_text_buffer_create_tag (buffer, "warn", "foreground", "yellow",
+                                    "weight", PANGO_WEIGHT_BOLD, NULL);
+  log->tag_err = gtk_text_buffer_create_tag (
+      buffer, "error", "foreground", "red", "weight", PANGO_WEIGHT_BOLD, NULL);
 
   gtk_box_append (GTK_BOX (log->container), log->label);
   gtk_box_append (GTK_BOX (log->container), log->scroll_window);
@@ -135,17 +147,17 @@ get_data_display_widgets (GtkWidget *container)
 extern void
 append_log_notice (LogWidgets *log, char const *msg)
 {
-  append_log (log, "LOG: ", msg);
+  append_log (log, "LOG: ", msg, log->tag_log);
 }
 
 extern void
 append_log_warn (LogWidgets *log, char const *msg)
 {
-  append_log (log, "WARN: ", msg);
+  append_log (log, "WARN: ", msg, log->tag_wrn);
 }
 
 extern void
 append_log_error (LogWidgets *log, char const *msg)
 {
-  append_log (log, "ERROR: ", msg);
+  append_log (log, "ERROR: ", msg, log->tag_err);
 }

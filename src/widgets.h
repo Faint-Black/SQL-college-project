@@ -8,6 +8,9 @@ typedef struct LogWidgets
   GtkWidget *label;
   GtkWidget *scroll_window;
   GtkWidget *text_view;
+  GtkTextTag *tag_log;
+  GtkTextTag *tag_wrn;
+  GtkTextTag *tag_err;
 } LogWidgets;
 
 typedef struct ActionWidgets
