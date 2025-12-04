@@ -42,8 +42,18 @@ activate (GtkApplication *app, [[maybe_unused]] gpointer user_data)
   gtk_window_set_default_size (GTK_WINDOW (window), 500, 300);
 
   GtkWidget *paned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
+
   GtkWidget *left_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_widget_set_margin_top (left_box, 6);
+  gtk_widget_set_margin_bottom (left_box, 6);
+  gtk_widget_set_margin_start (left_box, 6);
+  gtk_widget_set_margin_end (left_box, 6);
+
   GtkWidget *right_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_widget_set_margin_top (right_box, 6);
+  gtk_widget_set_margin_bottom (right_box, 6);
+  gtk_widget_set_margin_start (right_box, 6);
+  gtk_widget_set_margin_end (right_box, 6);
 
   GtkWidget *create_button
       = gtk_button_new_with_label ("Initialize SQL database");
