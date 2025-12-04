@@ -7,7 +7,6 @@ typedef struct LogWidgets
   GtkWidget *container;
   GtkWidget *label;
   GtkWidget *text_view;
-  GtkWidget *buffer;
 } LogWidgets;
 
 typedef struct ActionWidgets
@@ -25,5 +24,13 @@ typedef struct DisplayWidgets
 } DisplayWidgets;
 
 extern GtkWidget *create_log_widgets (void);
-extern GtkWidget *create_action_widgets (void);
-extern GtkWidget *create_display_widgets (void);
+extern GtkWidget *create_action_widgets (LogWidgets *log);
+extern GtkWidget *create_display_widgets (LogWidgets *log);
+
+extern LogWidgets *get_data_log_widgets (GtkWidget *container);
+extern ActionWidgets *get_data_action_widgets (GtkWidget *container);
+extern DisplayWidgets *get_data_display_widgets (GtkWidget *container);
+
+extern void append_log_notice (LogWidgets *log, char const *msg);
+extern void append_log_warn (LogWidgets *log, char const *msg);
+extern void append_log_error (LogWidgets *log, char const *msg);

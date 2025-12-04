@@ -1,5 +1,6 @@
 #include "widgets.h"
 #include "callbacks.h"
+#include "glib-object.h"
 #include <gtk/gtk.h>
 
 extern GtkWidget *
@@ -8,6 +9,10 @@ create_log_widgets (void)
   LogWidgets *log = g_new0 (LogWidgets, 1);
 
   log->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+  gtk_widget_set_margin_top (log->container, 3);
+  gtk_widget_set_margin_bottom (log->container, 3);
+  gtk_widget_set_margin_start (log->container, 3);
+  gtk_widget_set_margin_end (log->container, 3);
 
   log->label = gtk_label_new ("Log output:");
 
@@ -25,7 +30,7 @@ create_log_widgets (void)
 }
 
 extern GtkWidget *
-create_action_widgets (void)
+create_action_widgets (LogWidgets *log)
 {
   ActionWidgets *action = g_new0 (ActionWidgets, 1);
 
@@ -40,11 +45,11 @@ create_action_widgets (void)
   action->create_button
       = gtk_button_new_with_label ("Initialize SQL database");
   g_signal_connect (action->create_button, "clicked",
-                    G_CALLBACK (callback_init_database), NULL);
+                    G_CALLBACK (callback_init_database), log);
 
   action->destroy_button = gtk_button_new_with_label ("Drop SQL database");
   g_signal_connect (action->destroy_button, "clicked",
-                    G_CALLBACK (callback_drop_database), NULL);
+                    G_CALLBACK (callback_drop_database), log);
 
   gtk_box_append (GTK_BOX (action->container), action->label);
   gtk_box_append (GTK_BOX (action->container), action->create_button);
@@ -57,7 +62,7 @@ create_action_widgets (void)
 }
 
 extern GtkWidget *
-create_display_widgets (void)
+create_display_widgets (LogWidgets *log)
 {
   DisplayWidgets *display = g_new0 (DisplayWidgets, 1);
 
@@ -75,4 +80,52 @@ create_display_widgets (void)
   g_object_set_data_full (G_OBJECT (display->container), "struct-data",
                           display, (GDestroyNotify)g_free);
   return display->container;
+}
+
+extern LogWidgets *
+get_data_log_widgets (GtkWidget *container)
+{
+  return g_object_get_data (G_OBJECT (container), "struct-data");
+}
+
+extern ActionWidgets *
+get_data_action_widgets (GtkWidget *container)
+{
+  return g_object_get_data (G_OBJECT (container), "struct-data");
+}
+
+extern DisplayWidgets *
+get_data_display_widgets (GtkWidget *container)
+{
+  return g_object_get_data (G_OBJECT (container), "struct-data");
+}
+
+extern void
+append_log_notice (LogWidgets *log, char const *msg)
+{
+  GtkTextIter iterator;
+  GtkTextBuffer *buffer
+      = gtk_text_view_get_buffer (GTK_TEXT_VIEW (log->text_view));
+  gtk_text_buffer_get_end_iter (buffer, &iterator);
+  gtk_text_buffer_insert (buffer, &iterator, "NOTICE\n", -1);
+}
+
+extern void
+append_log_warn (LogWidgets *log, char const *msg)
+{
+  GtkTextIter iterator;
+  GtkTextBuffer *buffer
+      = gtk_text_view_get_buffer (GTK_TEXT_VIEW (log->text_view));
+  gtk_text_buffer_get_end_iter (buffer, &iterator);
+  gtk_text_buffer_insert (buffer, &iterator, "WARN\n", -1);
+}
+
+extern void
+append_log_error (LogWidgets *log, char const *msg)
+{
+  GtkTextIter iterator;
+  GtkTextBuffer *buffer
+      = gtk_text_view_get_buffer (GTK_TEXT_VIEW (log->text_view));
+  gtk_text_buffer_get_end_iter (buffer, &iterator);
+  gtk_text_buffer_insert (buffer, &iterator, "ERROR\n", -1);
 }

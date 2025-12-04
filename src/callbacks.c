@@ -1,30 +1,23 @@
 #include "callbacks.h"
 #include "sql.h"
+#include "widgets.h"
 
 extern void
 callback_init_database (GtkWidget *widget, gpointer user_data)
 {
+  LogWidgets *log = (LogWidgets *)user_data;
   if (sql_init ())
-    {
-      g_print ("FATAL ERROR: SQL could not initialize!\n");
-      exit (EXIT_FAILURE);
-    }
+    append_log_error (log, "SQL could not initialize!");
   else
-    {
-      g_print ("LOG: SQL database fully initialized\n");
-    }
+    append_log_notice (log, "SQL database fully initialized.");
 }
 
 extern void
 callback_drop_database (GtkWidget *widget, gpointer user_data)
 {
+  LogWidgets *log = (LogWidgets *)user_data;
   if (sql_destroy ())
-    {
-      g_print ("FATAL ERROR: SQL database could not be destroyed!\n");
-      exit (EXIT_FAILURE);
-    }
+    append_log_error (log, "SQL database could not be destroyed!");
   else
-    {
-      g_print ("LOG: SQL database dropped\n");
-    }
+    append_log_notice (log, "SQL database dropped.");
 }
