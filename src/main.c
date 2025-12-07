@@ -1,9 +1,11 @@
+#include "context.h"
+#include "sql.h"
 #include "widgets.h"
 #include <config.h>
 #include <gtk/gtk.h>
 
 static void
-activate (GtkApplication *app, gpointer user_data)
+activate (GtkApplication *app, gpointer ctx)
 {
   GtkWidget *window = gtk_application_window_new (app);
   gtk_window_set_title (GTK_WINDOW (window), "College Manager");
@@ -11,11 +13,9 @@ activate (GtkApplication *app, gpointer user_data)
 
   GtkWidget *h_paned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   GtkWidget *v_paned = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
-  GtkWidget *log_panel = create_log_widgets ();
-  GtkWidget *display_panel
-      = create_display_widgets (get_data_log_widgets (log_panel));
-  GtkWidget *actions_panel
-      = create_action_widgets (get_data_log_widgets (log_panel));
+  GtkWidget *log_panel = create_log_widgets (ctx);
+  GtkWidget *display_panel = create_display_widgets (ctx);
+  GtkWidget *actions_panel = create_action_widgets (ctx);
 
   // APP_WINDOW
   // L HORIZONTAL_PANED
@@ -35,13 +35,25 @@ activate (GtkApplication *app, gpointer user_data)
 int
 main (int argc, char **argv)
 {
+  Context *context = context_init ();
+
+  MYSQL *conn = sql_connect (context, DB_USR, DB_PWD);
+  if (conn == NULL)
+    {
+      printf ("FATAL ERROR: sql_connect() failed\n");
+      context_deinit (context);
+      return EXIT_FAILURE;
+    }
+
   GtkApplication *app;
   int status;
   app = gtk_application_new ("org.gtk.collegemanager",
                              G_APPLICATION_DEFAULT_FLAGS);
-  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+  g_signal_connect (app, "activate", G_CALLBACK (activate), context);
   status = g_application_run (G_APPLICATION (app), argc, argv);
   g_object_unref (app);
 
+  sql_disconnect (conn);
+  context_deinit (context);
   return status;
 }

@@ -1,5 +1,6 @@
 #include "widgets.h"
 #include "callbacks.h"
+#include "context.h"
 #include <gtk/gtk.h>
 
 static gchar *
@@ -32,9 +33,10 @@ append_log (LogWidgets *log, char const *prefix, char const *msg,
 }
 
 extern GtkWidget *
-create_log_widgets (void)
+create_log_widgets (Context *ctx)
 {
   LogWidgets *log = g_new0 (LogWidgets, 1);
+  ctx->log = log;
 
   log->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
   gtk_widget_set_margin_top (log->container, 3);
@@ -74,7 +76,7 @@ create_log_widgets (void)
 }
 
 extern GtkWidget *
-create_action_widgets (LogWidgets *log)
+create_action_widgets (Context *ctx)
 {
   ActionWidgets *action = g_new0 (ActionWidgets, 1);
 
@@ -89,11 +91,11 @@ create_action_widgets (LogWidgets *log)
   action->create_button
       = gtk_button_new_with_label ("Initialize SQL database");
   g_signal_connect (action->create_button, "clicked",
-                    G_CALLBACK (callback_init_database), log);
+                    G_CALLBACK (callback_init_database), ctx);
 
   action->destroy_button = gtk_button_new_with_label ("Drop SQL database");
   g_signal_connect (action->destroy_button, "clicked",
-                    G_CALLBACK (callback_drop_database), log);
+                    G_CALLBACK (callback_drop_database), ctx);
 
   gtk_box_append (GTK_BOX (action->container), action->label);
   gtk_box_append (GTK_BOX (action->container), action->create_button);
@@ -106,7 +108,7 @@ create_action_widgets (LogWidgets *log)
 }
 
 extern GtkWidget *
-create_display_widgets (LogWidgets *log)
+create_display_widgets (Context *ctx)
 {
   DisplayWidgets *display = g_new0 (DisplayWidgets, 1);
 

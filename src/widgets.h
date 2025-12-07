@@ -1,5 +1,6 @@
 #pragma once
 
+#include "context.h"
 #include <gtk/gtk.h>
 
 typedef struct LogWidgets
@@ -27,9 +28,9 @@ typedef struct DisplayWidgets
   GtkWidget *label;
 } DisplayWidgets;
 
-extern GtkWidget *create_log_widgets (void);
-extern GtkWidget *create_action_widgets (LogWidgets *log);
-extern GtkWidget *create_display_widgets (LogWidgets *log);
+extern GtkWidget *create_log_widgets (Context *ctx);
+extern GtkWidget *create_action_widgets (Context *ctx);
+extern GtkWidget *create_display_widgets (Context *ctx);
 
 extern LogWidgets *get_data_log_widgets (GtkWidget *container);
 extern ActionWidgets *get_data_action_widgets (GtkWidget *container);
