@@ -16,13 +16,13 @@ const char *sql_com_init[] = {
   "  user_id INT AUTO_INCREMENT PRIMARY KEY,\n"
   "  name VARCHAR(150) NOT NULL,\n"
   "  email VARCHAR(200) NOT NULL UNIQUE,\n"
-  "  password_hash VARCHAR(255) NOT NULL,\n"
-  "  phone VARCHAR(30),\n"
+  "  password VARCHAR(255) NOT NULL,\n"
+  "  phone VARCHAR(30) DEFAULT NULL,\n"
   "  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n"
-  "  CHECK (CHAR_LENGTH(password_hash) > 0)\n"
+  "  CHECK (CHAR_LENGTH(password) > 0)\n"
   ")",
 
-  // TABLE: User -- Roles
+  // TABLE: User-Role association
   "CREATE TABLE user_role (\n"
   "  user_id INT NOT NULL,\n"
   "  role_id INT NOT NULL,\n"
@@ -146,5 +146,20 @@ const char *sql_com_init[] = {
   "    SET MESSAGE_TEXT = 'Professor cannot enroll in own class!';\n"
   "  END IF;\n"
   "END",
+
+  // INSERTION: Available roles
+  "INSERT INTO roles (name) VALUES ('admin')",
+  "INSERT INTO roles (name) VALUES ('professor')",
+  "INSERT INTO roles (name) VALUES ('student')",
+
+  // INSERTION: Special non-person user 'root'
+  "INSERT INTO user_account (name, email, password)\n"
+  "       VALUES ('root', 'root@localhost', SHA2('" DB_PWD "', 256))",
+
+  // INSERTION: Give root the admin role
+  "INSERT INTO user_role (user_id, role_id)\n"
+  "       SELECT u.user_id, r.role_id\n"
+  "       FROM user_account u, roles r\n"
+  "       WHERE u.name='root' AND r.name='admin'\n",
 };
 const int sql_com_init_len = sizeof (sql_com_init) / sizeof (sql_com_init[0]);
