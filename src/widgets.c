@@ -1,6 +1,7 @@
 #include "widgets.h"
 #include "callbacks.h"
 #include "context.h"
+#include "utils.h"
 #include <gtk/gtk.h>
 
 static gchar *
@@ -28,6 +29,8 @@ append_log (LogWidgets *log, char const *prefix, char const *msg,
   gtk_text_buffer_insert_with_tags (buffer, &iterator, prefix, -1, tag, NULL);
   gtk_text_buffer_insert (buffer, &iterator, msg, -1);
   gtk_text_buffer_insert (buffer, &iterator, "\n", -1);
+
+  scroll_to_bottom (GTK_SCROLLED_WINDOW (log->scroll_window));
 
   g_free (time);
 }
