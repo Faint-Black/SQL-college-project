@@ -18,26 +18,41 @@
     every attribute/.style={fill=gray!30, draw=gray, thick},
     ]
 
-    \node[entity] (ent_scholar)
-    {Scholar}
-    child {node [key attribute, above left = of ent_scholar] {id}}
-    child {node [attribute, above right = of ent_scholar] {name, email}};
+    \node[entity] (ent_user)
+    {User}
+    child {node [attribute, above = of ent_user] {name, email, password}};
     
-    \node[relationship, below = of ent_scholar] (rel_is)
-    {is}
-    edge (ent_scholar)
-    child {node [entity, below = of rel_is] (ent_student) {Student}}
-    child {node [entity, below right = of rel_is] (ent_admin) {Admin}}
-    child {node [entity, below left = of rel_is] (ent_professor) {Professor}};
+    \node[relationship, below = of ent_user] (rel_has_role)
+    {role}
+    edge (ent_user)
+    child {node [entity, below = of rel_has_role] (ent_student) {Student}}
+    child {node [entity, below right = of rel_has_role] (ent_admin) {Admin}}
+    child {node [entity, below left = of rel_has_role] (ent_professor) {Professor}};
+
+    \node [xshift=0.8em, yshift=-2em] at (ent_user) {1};
+    \node [xshift=0.8em, yshift=2em] at (rel_has_role) {N};
+
+    \node[relationship, below = of ent_professor] (rel_teaches)
+    {teaches}
+    edge (ent_professor);
+
+    \node[entity, below = of rel_teaches] (ent_class)
+    {Class}
+    edge (rel_teaches)
+    child {node[attribute, right = 2\ERspacing of ent_class] {dates, status, max\_students}};
 
     \node[relationship, below = of ent_student] (rel_enrolls)
     {enrolls}
     edge (ent_student)
-    child {node [entity, below = of rel_enrolls] (ent_class) {Class} child {node [key attribute, right = of ent_class] {id}}};
+    edge (ent_class)
+    child {node [attribute, right = 2\ERspacing of rel_enrolls] {date, status, grade, priority}};
 
-    \node[relationship, below = of ent_professor] (rel_teaches)
-    {teaches}
-    edge (ent_professor)
-    edge (ent_class);
+    \node[relationship, below = of ent_class] (rel_courses)
+    {courses}
+    edge (ent_class)
+    child {node [entity, below = of rel_courses] (ent_course) {Course}};
+
+    \node[attribute, below = of ent_course] {course\_code, title, description, max\_students}
+    edge (ent_course);
 \end{tikzpicture}
 \end{document}
