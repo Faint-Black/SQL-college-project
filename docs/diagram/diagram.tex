@@ -20,7 +20,7 @@
 
     \node[entity] (ent_user)
     {User}
-    child {node [attribute, above = of ent_user] {name, email, password}};
+    child {node [attribute, left = 2\ERspacing of ent_user] {name, email, password}};
     
     \node[relationship, below = of ent_user] (rel_has_role)
     {role}
@@ -50,9 +50,30 @@
     \node[relationship, below = of ent_class] (rel_courses)
     {courses}
     edge (ent_class)
-    child {node [entity, below = of rel_courses] (ent_course) {Course}};
+    child {node [entity, right = of rel_courses] (ent_course) {Course}};
 
-    \node[attribute, below = of ent_course] {course\_code, title, description, max\_students}
+    \node[attribute, below right = of ent_course] {course\_code, title, description, max\_students}
     edge (ent_course);
+
+    \node[relationship, left = of ent_class] (rel_has)
+    {has}
+    edge (ent_class);
+
+    \node[entity, left = of rel_has] (ent_material)
+    {Class Material}
+    edge (rel_has)
+    child {node [attribute, above = of ent_material] {title, description, file\_url}};
+
+    \node[entity, below left = of rel_has] (ent_activity)
+    {Class Activity}
+    edge (rel_has)
+    child {node [attribute, below = of ent_activity] {title, description, due\_date, grade\_weight, max\_score}};
+
+    \node[left = 4\ERspacing of ent_professor, inner sep = 0pt, outer sep = 0pt] (anchor1) {} edge (ent_professor);
+    \node[relationship, below = 2\ERspacing of anchor1] (rel_gives)
+    {gives}
+    edge (anchor1)
+    edge (ent_material)
+    edge (ent_activity);
 \end{tikzpicture}
 \end{document}
