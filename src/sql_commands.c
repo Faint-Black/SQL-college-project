@@ -154,7 +154,7 @@ const char *sql_com_init[] = {
 
   // INSERTION: Special non-person user 'root'
   "INSERT INTO user_account (name, email, password)\n"
-  "       VALUES ('root', 'root@localhost', SHA2('" DB_PWD "', 256))",
+  "       VALUES ('root', 'root', SHA2('" DB_PWD "', 256))",
 
   // INSERTION: Give root the admin role
   "INSERT INTO user_role (user_id, role_id)\n"

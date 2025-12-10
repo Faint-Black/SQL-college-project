@@ -13,6 +13,8 @@ typedef struct Context
 {
   MYSQL *conn;
   struct LogWidgets *log;
+  char *current_user_email;
+  char *current_user_password;
 } Context;
 
 extern Context *context_init (void);
