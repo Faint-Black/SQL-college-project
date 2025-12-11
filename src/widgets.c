@@ -483,7 +483,7 @@ create_forms_widgets (Context *ctx)
   forms->submission_form = create_submission_form (ctx);
 
   gtk_stack_add_named (GTK_STACK (forms->container), forms->default_form,
-                       "default_form");
+                       "default");
   gtk_stack_add_named (GTK_STACK (forms->container), forms->role_form,
                        "role_form");
   gtk_stack_add_named (GTK_STACK (forms->container), forms->user_account_form,
