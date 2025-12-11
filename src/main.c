@@ -14,7 +14,7 @@ activate (GtkApplication *app, gpointer ctx)
   GtkWidget *h_paned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
   GtkWidget *v_paned = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
   GtkWidget *log_panel = create_log_widgets (ctx);
-  GtkWidget *display_panel = create_display_widgets (ctx);
+  GtkWidget *forms_panel = create_forms_widgets (ctx);
   GtkWidget *actions_panel = create_action_widgets (ctx);
 
   // APP_WINDOW
@@ -22,10 +22,10 @@ activate (GtkApplication *app, gpointer ctx)
   //   L (left)VERTICAL_PANED
   //   | L (top)ACTIONS_PANEL
   //   | L (bottom)LOG_PANEL
-  //   L (right)DISPLAY_PANEL
+  //   L (right)FORMS_PANEL
   gtk_window_set_child (GTK_WINDOW (window), h_paned);
   gtk_paned_set_start_child (GTK_PANED (h_paned), v_paned);
-  gtk_paned_set_end_child (GTK_PANED (h_paned), display_panel);
+  gtk_paned_set_end_child (GTK_PANED (h_paned), forms_panel);
   gtk_paned_set_start_child (GTK_PANED (v_paned), actions_panel);
   gtk_paned_set_end_child (GTK_PANED (v_paned), log_panel);
 
